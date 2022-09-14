@@ -1,0 +1,98 @@
+npm init
+
+npm i --save-dev prettier
+[npm install touch-cli -g]
+[Run Powershell as Admin: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser]
+touch .prettierrc
+"prettier": "prettier --config .prettierrc \"src/**/*.ts\" --write",
+"prettierAll": "prettier --config .prettierrc --write .",
+npm run prettier
+npx prettier --write ./src
+
+npm i --save-dev eslint
+npm i --save-dev eslint-config-prettier eslint-plugin-prettier
+npm init @eslint/config
+"lint": "eslint ./src --ext .ts --fix"
+npm run lint
+
+npm i --save-dev typescript
+npm i --save-dev ts-node
+npm i --save-dev @types/node
+npm install --save-dev @typescript-eslint/eslint-plugin
+npm install --save-dev @typescript-eslint/parser
+npx tsc --init
+"build": "npx tsc"
+npm run build
+node dist/server.js
+ts-node src/server.ts
+
+npm i lodash
+npm i --save-dev @types/lodash
+npm i --save-dev @types/packageName
+
+npm i --save-dev jasmine
+npm i --save-dev jasmine-spec-reporter
+npm i --save-dev @types/jasmine
+npx jasmine init
+"jasmine": "jasmine",
+npm run jasmine
+npx jasmine
+
+npm i dotenv --save
+
+npm i simple-node-logger --save
+
+npm i express
+npm i --save-dev @types/express
+
+npm i --save-dev nodemon
+
+npm i supertest
+npm i --save-dev @types/supertest
+
+npm i cors
+npm i body-parser
+npm i --save-dev @types/cors
+npm i --save-dev @types/body-parser
+
+npm i db-migrate -g
+npm i db-migrate db-migrate-pg
+npm i pg
+npm i --save-dev @types/pg
+
+db-migrate create users-table --sql-file -e dev
+db-migrate create categories-table --sql-file -e dev
+db-migrate create statuses-table --sql-file -e dev
+db-migrate create products-table --sql-file -e dev
+db-migrate create orders-table --sql-file -e dev
+db-migrate create order-products-table --sql-file -e dev
+
+db-migrate up -e dev
+db-migrate down -e dev
+
+db-migrate up all
+db-migrate down -c 5
+db-migrate reset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+npm install
+npm update
+npm audit
