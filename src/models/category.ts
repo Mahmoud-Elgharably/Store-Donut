@@ -1,5 +1,6 @@
 import db from '../database';
 import errLogger from '../utilities/errLogger';
+import config from '../config';
 
 export type Category = {
     id: number;
@@ -15,7 +16,7 @@ export class CategoryStore {
             conn.release();
             return result.rows;
         } catch (err) {
-            errLogger.error(`Could not get categories. Error: ${err}`);
+            errLogger.error(config.msgFailGtItm + err);
             return null;
         }
     }
@@ -28,33 +29,33 @@ export class CategoryStore {
             conn.release();
             return result.rows[0];
         } catch (err) {
-            errLogger.error(`Could not find product (${id}). Error: ${err}`);
+            errLogger.error(config.msgFailFdItm + id + config.msgFailError + err);
             return null;
         }
     }
 
-    async create(c: Category): Promise<Category | null> {
+    async create(i: Category): Promise<Category | null> {
         try {
             const conn = await db.connect();
             const sql = 'INSERT INTO categories (name) VALUES ($1) RETURNING *';
-            const result = await conn.query(sql, [c.name]);
+            const result = await conn.query(sql, [i.name]);
             conn.release();
             return result.rows[0];
         } catch (err) {
-            errLogger.error(`Could not add new category (${c.name})`);
+            errLogger.error(config.msgFailAdItm + i.name + config.msgFailError + err);
             return null;
         }
     }
 
-    async update(c: Category): Promise<Category | null> {
+    async update(i: Category): Promise<Category | null> {
         try {
             const conn = await db.connect();
             const sql = 'UPDATE categories SET name = $2 WHERE id = $1 RETURNING *';
-            const result = await conn.query(sql, [c.id, c.name]);
+            const result = await conn.query(sql, [i.id, i.name]);
             conn.release();
             return result.rows[0];
         } catch (err) {
-            errLogger.error(`Could not update the category (${c.name}). Error: ${err}`);
+            errLogger.error(config.msgFailUpItm + i.name + config.msgFailError + err);
             return null;
         }
     }
@@ -67,8 +68,19 @@ export class CategoryStore {
             conn.release();
             return result.rows[0];
         } catch (err) {
-            errLogger.error(`Could not delete category (${id}). Error: ${err}`);
+            errLogger.error(config.msgFailDtItm + id + config.msgFailError + err);
             return null;
+        }
+    }
+
+    async truncate(): Promise<void> {
+        try {
+            const conn = await db.connect();
+            const sql = 'DELETE FROM categories;\nALTER SEQUENCE categories_id_seq restart with 1';
+            await conn.query(sql);
+            conn.release();
+        } catch (err) {
+            errLogger.error(config.msgFailTrnct + err);
         }
     }
 }
