@@ -74,7 +74,10 @@ db-migrate up all
 db-migrate down -c 5
 db-migrate reset
 
-
+npm i bcrypt
+npm i --save-dev @types/bcrypt
+npm i jsonwebtoken
+npm i --save-dev @types/jsonwebtoken
 
 
 

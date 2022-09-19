@@ -1,57 +1,612 @@
-# Storefront Backend Project
+# Store Donut
 
-## Getting Started
+## Overview | Description
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+This project is a sample of creating a Restful Web API that supports an online storefront to showcase its great product ideas.
 
-## Required Technologies
+## Table of Contents
 
-Your application must make use of the following libraries:
+- [Technicals](#technicals)
+- [Instructions](#instructions)
+- [API Reference](#api-reference)
+- [Scripts](#scripts)
+- [Run Locally](#run-locally)
+- [Running Tests](#running-tests)
+- [Author](#author)
 
--   Postgres for the database
--   Node/Express for the application logic
--   dotenv from npm for managing environment variables
--   db-migrate from npm for migrations
--   jsonwebtoken from npm for working with JWTs
--   jasmine from npm for testing
 
-## Steps to Completion
+## Technicals:
 
-### 1. Plan to Meet Requirements
+1. Node and Express Environment
+2. Postgres for the database
+3. dotenv from npm for managing environment variables
+4. db-migrate from npm for migrations
+5. jsonwebtoken from npm for working with JWTs
+6. jasmine from npm for testing
+7. supertest from npm for testing
+8. Simple-node-logger package
+9. typescript
+10. cors
+12. body-parser
+13. bcrypt
+14. nodemon
+15. ts-node
+16. ES6
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API.
+## Instructions
 
-Your first task is to read the requirements and update the document with the following:
+1. install packages by running this command `npm install` or `yarn`.
+2. add a .env file in the root directory and set the missing ### environment parameters
 
--   Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.  
-    **Example**: A SHOW route: 'blogs/:id' [GET]
+```bash
+  ENV=prod
+  PORT=3000
+  URL=http://localhost
+  DB_DRIVER=pg
+  HOST_DEV=127.0.0.1
+  DB_DEV=donut_dev
+  USER_DEV=donut_user
+  PASSWORD_DEV=###
+  HOST_TEST=127.0.0.1
+  DB_TEST=donut_test
+  USER_TEST=donut_user
+  PASSWORD_TEST=###
+  HOST_PROD=127.0.0.1
+  DB_PROD=donut_prod
+  USER_PROD=donut_user
+  PASSWORD_PROD=###
+  BCRYPT_PASSWORD=###
+  SALT_ROUNDS=10
+  TOKEN_SECRET=###
+```
 
--   Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.  
-    **Example**: You can format this however you like but these types of information should be provided
-    Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+3. build the app by running `npm run build`.
+4. run this command to setup the database `db-migrate up -e prod`.
+5. run this command `npm run start` to start the app and get access via http://127.0.0.1:3000
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape.
+## API Reference
 
-### 2. DB Creation and Migrations
+### 1. View Categories
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder.
+- **Endpoint Name** - `index`      <br>
+- **Method** - `GET`               <br>
+- **URL Pattern** - `/categories`            <br>
+- **Usage**
+    - Open BASE_URL/categories in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/categories
+    ```
+- **Expected Response** - JSON containing all categories in the database <br>
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+### 2. View Single Category
 
-### 3. Models
+- **Endpoint Name** - `show`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/categories/{id}`  <br>
+- **Usage**
+    - Open BASE_URL/categories/{id} in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/categories/{id}
+    ```
+- **Expected Response** - Category with the {id} in database
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+### 3. Add Category
 
-### 4. Express Handlers
+- **Endpoint Name** - `create` <br>
+- **Method** - `POST`              <br>
+- **URL Pattern** - `/categories`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X POST \
+    -d '{ "id": 0, 
+        "name": "Mobiles"
+        }' \
+    BASE_URL/categories
+    ```
+- **Expected Response** - Addition successful without any error message and returning the added category. 
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled.
+### 4. Update Category
 
-### 5. JWTs
+- **Endpoint Name** - `update` <br>
+- **Method** - `PUT`                  <br>
+- **URL Pattern** - `/categories/{id}`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X PUT \
+    -d '{ "id": 1, 
+        "name": "Computers",
+        }' \
+    BASE_URL/categories/{id}
+    ```
+- **Expected Response** - Update successful without any error message and return the updated category. <br>
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+### 5. Delete Category
 
-### 6. QA and `README.md`
+- **Endpoint Name** - `destroy` <br>
+- **Method** - `DELETE` <br>
+- **URL Pattern** - `/categories/{id}` <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X DELETE \
+    BASE_URL/categories/{id}
+    ```
+- **Expected Response** - Deletion successful without any error message and returning the deleted category. <br>
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database.
+### 6. View Statuses
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+- **Endpoint Name** - `index`      <br>
+- **Method** - `GET`               <br>
+- **URL Pattern** - `/statuses`            <br>
+- **Usage**
+    - Open BASE_URL/statuses in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/statuses
+    ```
+- **Expected Response** - JSON containing all statuses in the database <br>
+
+### 7. View Single Status
+
+- **Endpoint Name** - `show`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/statuses/{id}`  <br>
+- **Usage**
+    - Open BASE_URL/statuses/{id} in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/statuses/{id}
+    ```
+- **Expected Response** - Status with the {id} in database
+
+### 8. Add Status
+
+- **Endpoint Name** - `create` <br>
+- **Method** - `POST`              <br>
+- **URL Pattern** - `/statuses`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X POST \
+    -d '{ "id": 0, 
+        "name": "complete",
+        }' \
+    BASE_URL/statuses
+    ```
+- **Expected Response** - Addition successful without any error message and returning the added status. 
+- **NOTE** - You have to add 'active' and 'complete'
+
+### 9. Update Status
+
+- **Endpoint Name** - `update` <br>
+- **Method** - `PUT`                  <br>
+- **URL Pattern** - `/statuses/{id}`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X PUT \
+    -d '{ "id": 1, 
+        "name": "active",
+        }' \
+    BASE_URL/statuses/{id}
+    ```
+- **Expected Response** - Update successful without any error message and return the updated status. <br>
+
+### 10. Delete Status
+
+- **Endpoint Name** - `destroy` <br>
+- **Method** - `DELETE` <br>
+- **URL Pattern** - `/statuses/{id}` <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X DELETE \
+    BASE_URL/statuses/{id}
+    ```
+- **Expected Response** - Deletion successful without any error message and returning the deleted status. <br>
+
+### 11. View Users
+
+- **Endpoint Name** - `index`      <br>
+- **Method** - `GET`               <br>
+- **URL Pattern** - `/users`            <br>
+- **Usage**
+    - Open BASE_URL/users in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/users
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    ```
+- **Expected Response** - JSON containing all users in the database <br>
+
+### 12. View Single User
+
+- **Endpoint Name** - `show`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/users/{id}`  <br>
+- **Usage**
+    - Open BASE_URL/users/{id} in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/users/{id}
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    ```
+- **Expected Response** - User with the {id} in database
+
+### 13. Add User
+
+- **Endpoint Name** - `create` <br>
+- **Method** - `POST`              <br>
+- **URL Pattern** - `/users`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X POST \
+    -d '{ "id": 0, 
+        "first_name": "Murad",
+        "last_name": "Zyad",
+        "user_name": "mrd",
+        "password": "456"
+        }' \
+    BASE_URL/users
+    ```
+- **Expected Response** - Addition successful without any error message and returning the token. 
+
+### 14. Update User
+
+- **Endpoint Name** - `update` <br>
+- **Method** - `PUT`                  <br>
+- **URL Pattern** - `/users/{id}`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X PUT \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    -d '{ "id": 1, 
+        "first_name": "Gamal",
+        "last_name": "Sad",
+        "user_name": "gmy",
+        "password": "123"
+        }' \
+    BASE_URL/users/{id}
+    ```
+- **Expected Response** - Update successful without any error message and return the token.
+
+### 15. Authenticate User
+
+- **Endpoint Name** - `authenticate` <br>
+- **Method** - `POST`              <br>
+- **URL Pattern** - `/users/authenticate`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X POST \
+    -d '{ "user_name": "mrd", 
+        "password": "456"
+        }' \
+    BASE_URL/users/authenticate
+    ```
+- **Expected Response** - Logging successful without any error message and returning the user logged in. 
+
+### 16. Delete User
+
+- **Endpoint Name** - `destroy` <br>
+- **Method** - `DELETE` <br>
+- **URL Pattern** - `/users/{id}` <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X DELETE \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    BASE_URL/users/{id}
+    ```
+- **Expected Response** - Deletion successful without any error message and returning the deleted user. <br>
+
+### 17. View Products
+
+- **Endpoint Name** - `index`      <br>
+- **Method** - `GET`               <br>
+- **URL Pattern** - `/products`            <br>
+- **Usage**
+    - Open BASE_URL/products in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/products
+    ```
+- **Expected Response** - JSON containing all products in the database <br>
+
+### 18. View Single Product
+
+- **Endpoint Name** - `show`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/products/{id}`  <br>
+- **Usage**
+    - Open BASE_URL/products/{id} in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/products/{id}
+    ```
+- **Expected Response** - Product with the {id} in database
+
+### 19. Add Product
+
+- **Endpoint Name** - `create` <br>
+- **Method** - `POST`              <br>
+- **URL Pattern** - `/products`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X POST \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    -d '{ "id": 0, 
+        "name": "NOKIA 50",
+        "price": 2100,
+        "category_id": 1
+        }' \
+    BASE_URL/products
+    ```
+- **Expected Response** - Addition successful without any error message and returning the added product. 
+
+### 20. Update Product
+
+- **Endpoint Name** - `update` <br>
+- **Method** - `PUT`                  <br>
+- **URL Pattern** - `/products/{id}`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X PUT \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    -d '{ "id": 1, 
+        "name": "OPPO XI-3200",
+        "price": 7500,
+        "category_id": 1
+        }' \
+    BASE_URL/products/{id}
+    ```
+- **Expected Response** - Update successful without any error message and return the updated product. <br>
+
+### 21. Delete Product
+
+- **Endpoint Name** - `destroy` <br>
+- **Method** - `DELETE` <br>
+- **URL Pattern** - `/products/{id}` <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X DELETE \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    BASE_URL/products/{id}
+    ```
+- **Expected Response** - Deletion successful without any error message and returning the deleted product. <br>
+
+### 22. View Orders
+
+- **Endpoint Name** - `index`      <br>
+- **Method** - `GET`               <br>
+- **URL Pattern** - `/orders`            <br>
+- **Usage**
+    - Open BASE_URL/orders in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/orders
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    ```
+- **Expected Response** - JSON containing all orders in the database <br>
+
+### 23. View Single Order
+
+- **Endpoint Name** - `show`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/orders/{id}`  <br>
+- **Usage**
+    - Open BASE_URL/orders/{id} in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/orders/{id}
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    ```
+- **Expected Response** - Order with the {id} in database
+
+### 24. Add Order
+
+- **Endpoint Name** - `create` <br>
+- **Method** - `POST`              <br>
+- **URL Pattern** - `/orders`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X POST \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    -d '{ "id": 0, 
+        "status_id": 1,
+        "user_id": 1
+        }' \
+    BASE_URL/orders
+    ```
+- **Expected Response** - Addition successful without any error message and returning the added order. 
+
+### 25. Update Order
+
+- **Endpoint Name** - `update` <br>
+- **Method** - `PUT`                  <br>
+- **URL Pattern** - `/orders/{id}`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X PUT \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    -d '{ "id": 1, 
+        "status_id": 2,
+        "user_id": 1
+        }' \
+    BASE_URL/orders/{id}
+    ```
+- **Expected Response** - Update successful without any error message and return the updated order. <br>
+
+### 26. Delete Order
+
+- **Endpoint Name** - `destroy` <br>
+- **Method** - `DELETE` <br>
+- **URL Pattern** - `/orders/{id}` <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X DELETE \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    BASE_URL/orders/{id}
+    ```
+- **Expected Response** - Deletion successful without any error message and returning the deleted order. <br>
+
+### 27. Add products to the current order
+
+- **Endpoint Name** - `addProduct` <br>
+- **Method** - `POST`                  <br>
+- **URL Pattern** - `/orders/{id}/products`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X PUT \
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    -d '{ "quantity": 15, 
+        "productId": 1
+        }' \
+    BASE_URL/orders/{id}/products
+    ```
+- **Expected Response** - Addition successful without any error message and returning the added product. <br>
+
+### 28. Display the products of the selected order belonging to the selected user
+
+- **Endpoint Name** - `showProducts`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/users/{userID}/orders/{orderID}/products`  <br>
+- **Usage**
+    - Open BASE_URL/users/{userID}/orders/{orderID}/products in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/users/{userID}/orders/{orderID}/products
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    ```
+- **Expected Response** - Products of the order with the {orderID} in database
+
+### 29. Display top 5 most popular products
+
+- **Endpoint Name** - `getTop5Products`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/products-top-5`  <br>
+- **Usage**
+    - Open BASE_URL/products-top-5 in browser
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/products-top-5
+    ```
+- **Expected Response** - List of the 5 top most popular products in the database
+
+### 30. Display Products by category
+
+- **Endpoint Name** - `getProductsByCat`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/products-by-cat`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/products-by-cat
+    -d '{ "category": "Mobiles" }' \
+    ```
+- **Expected Response** - List of products that belong to the selected category in the database
+
+### 31. Display active order by user
+
+- **Endpoint Name** - `getActOrderByUsr`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/active-order`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/active-order
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    -d '{ "user_id": 1 }' \
+    ```
+- **Expected Response** - Current Order by user in the database
+
+### 32. Display complete orders by user
+
+- **Endpoint Name** - `getCmpOrdersByUsr`    <br>
+- **Method** - `GET`                  <br>
+- **URL Pattern** - `/complete-orders`  <br>
+- **Usage** - CURL OR POSTMAN ONLY
+    - **Terminal/CURL**
+    ```sh
+    curl -X GET BASE_URL/complete-orders
+    -H "Authorization: Bearer <ACCESS_TOKEN>" \
+    -d '{ "user_id": 1 }' \
+    ```
+- **Expected Response** - Complete Orders by user in the database
+
+## Scripts
+
+Run prettier
+
+```bash
+  npm run prettier
+```
+
+Run eslint
+
+```bash
+  npm run lint
+```
+
+Build the project
+
+```bash
+  npm run build
+```
+
+Run the application
+
+```bash
+  npm run start
+```
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/Mahmoud-Elgharably/Store-Donut.git
+```
+
+Go to the project directory
+
+```bash
+  cd Store-Donut
+```
+
+Install dependencies - (then follow the above [Instructions](#instructions))
+
+```bash
+  npm install
+```
+
+Run the application
+
+```bash
+  npm run start
+```
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test
+```
+
+## Author
+
+[Mahmoud Elgharably](https://twitter.com/Mahmoud62651196)

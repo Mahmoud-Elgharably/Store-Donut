@@ -35,20 +35,10 @@
       }
     },
     "prod": {
-      "driver": {
-        "ENV": "DB_DRIVER"
-      },
-      "host": {
-        "ENV": "HOST_PROD"
-      },
-      "database": {
-        "ENV": "DB_PROD"
-      },
-      "user": {
-        "ENV": "USER_PROD"
-      },
-      "password": {
-        "ENV": "PASSWORD_PROD"
-      }
+      "driver": "pg",
+      "host": "127.0.0.1",
+      "database": "donut_prod",
+      "user": "donut_user",
+      "password": "123"
     }
   }
