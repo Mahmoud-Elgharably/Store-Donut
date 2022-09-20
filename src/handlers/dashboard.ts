@@ -7,7 +7,7 @@ const dashboard = new DashboardQueries();
 const addProduct = async (req: Request, res: Response) => {
     try {
         const quantity: number = parseInt(req.body.quantity);
-        const productId: number = parseInt(req.body.productId);
+        const productId: number = parseInt(req.body.product_id);
         const orderId: number = parseInt(req.params.id);
         const added = await dashboard.addProduct(quantity, productId, orderId);
         res.json(added);

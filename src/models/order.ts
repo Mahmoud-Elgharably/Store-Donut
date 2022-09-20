@@ -84,7 +84,9 @@ export class OrderStore {
     async truncate(): Promise<void> {
         try {
             const conn = await db.connect();
-            const sql = 'DELETE FROM orders;\nALTER SEQUENCE orders_id_seq restart with 1';
+            let sql = 'DELETE FROM order_products;\nALTER SEQUENCE order_products_id_seq restart with 1';
+            await conn.query(sql);
+            sql = 'DELETE FROM orders;\nALTER SEQUENCE orders_id_seq restart with 1';
             await conn.query(sql);
             conn.release();
         } catch (err) {

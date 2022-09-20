@@ -8,7 +8,7 @@ const verifyAuthToken = (req: Request, res: Response, next: Function) => {
     try {
         const authorizationHeader = req.headers.authorization;
         const tokenType = (authorizationHeader as unknown as string).split(' ')[0];
-        if (tokenType === 'Bearer') {
+        if (tokenType === config.tokenType) {
             const token = (authorizationHeader as unknown as string).split(' ')[1];
             jwt.verify(token, config.tokenSecret as unknown as string);
         } else {

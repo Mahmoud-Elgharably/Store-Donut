@@ -62,7 +62,8 @@ This project is a sample of creating a Restful Web API that supports an online s
 
 3. build the app by running `npm run build`.
 4. run this command to setup the database `db-migrate up -e prod`.
-5. run this command `npm run start` to start the app and get access via http://127.0.0.1:3000
+5. you can choose your preferred Port by changing its value in the .env file
+6. run this command `npm run start` to start the app and get access via http://127.0.0.1:3000
 
 ## API Reference
 
