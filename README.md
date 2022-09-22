@@ -7,6 +7,7 @@ This project is a sample of creating a Restful Web API that supports an online s
 ## Table of Contents
 
 - [Technicals](#technicals)
+- [Prerequisite](#prerequisite)
 - [Instructions](#instructions)
 - [API Reference](#api-reference)
 - [Scripts](#scripts)
@@ -33,37 +34,61 @@ This project is a sample of creating a Restful Web API that supports an online s
 15. ts-node
 16. ES6
 
+## Prerequisite
+
+This application uses PostgreSQL database, so as prerequisite you need to set up PostgreSQL database server as per requirments shared below:
+
+1. install and configure PostgreSQL database server on your machine
+2. in order to use PostgreSQL you will need a user/password as well as a database. First use the  following to become the **postgres** user, then create a user on PostgreSQL with your user name through PSQL terminal
+    ```sh
+    psql postgres postgres
+    ```    
+3. create a database user and set its password
+    ```sh
+    postgres=# CREATE USER donut_user WITH PASSWORD 'PASSWORD';
+    ```
+4. create two databases while logged in as **postgres** user
+    ```sh
+    postgres=# CREATE DATABASE donut_prod;
+    postgres=# CREATE DATABASE donut_test;
+    ```
+5. Grant all database privileges to the created user in both databases
+    ```sh
+    postgres=# GRANT ALL PRIVILEGES ON DATABASE donut_prod TO donut_user;
+    postgres=# GRANT ALL PRIVILEGES ON DATABASE donut_test TO donut_user;
+    ```
+6. test the database connection using these new credentials
+
 ## Instructions
 
 1. install packages by running this command `npm install` or `yarn`.
 2. add a .env file in the root directory and set the missing ### environment parameters
-
-```bash
-  ENV=prod
-  PORT=3000
-  URL=http://localhost
-  DB_DRIVER=pg
-  HOST_DEV=127.0.0.1
-  DB_DEV=donut_dev
-  USER_DEV=donut_user
-  PASSWORD_DEV=###
-  HOST_TEST=127.0.0.1
-  DB_TEST=donut_test
-  USER_TEST=donut_user
-  PASSWORD_TEST=###
-  HOST_PROD=127.0.0.1
-  DB_PROD=donut_prod
-  USER_PROD=donut_user
-  PASSWORD_PROD=###
-  BCRYPT_PASSWORD=###
-  SALT_ROUNDS=10
-  TOKEN_SECRET=###
-```
-
+    ```bash
+    ENV=prod
+    PORT=3000
+    URL=http://localhost
+    DB_DRIVER=pg
+    HOST_DEV=127.0.0.1
+    DB_DEV=donut_dev
+    USER_DEV=donut_user
+    PASSWORD_DEV=PASSWORD
+    HOST_TEST=127.0.0.1
+    DB_TEST=donut_test
+    USER_TEST=donut_user
+    PASSWORD_TEST=PASSWORD
+    HOST_PROD=127.0.0.1
+    DB_PROD=donut_prod
+    USER_PROD=donut_user
+    PASSWORD_PROD=PASSWORD
+    BCRYPT_PASSWORD=PASSWORD
+    SALT_ROUNDS=10
+    TOKEN_SECRET=SECRET
+    ```
 3. build the app by running `npm run build`.
-4. run this command to setup the database `db-migrate up -e prod`.
-5. you can choose your preferred Port by changing its value in the .env file
-6. run this command `npm run start` to start the app and get access via http://127.0.0.1:3000
+4. batabase and backend are running on **port 3000** .
+5. run this command to setup the database `db-migrate up -e prod`.
+6. you can choose your preferred Port by changing its value in the .env file
+7. run this command `npm run start` to start the app and get access via http://127.0.0.1:3000
 
 ## API Reference
 
