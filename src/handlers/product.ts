@@ -6,13 +6,21 @@ import errLogger from '../utilities/errLogger';
 const store = new ProductStore();
 
 const index = async (_req: Request, res: Response) => {
-    const products = await store.index();
-    res.json(products);
+    try {
+        const products = await store.index();
+        res.json(products);
+    } catch (err) {
+        errLogger.error(err);
+    }
 };
 
 const show = async (req: Request, res: Response) => {
-    const product = await store.show(req.body.id);
-    res.json(product);
+    try {
+        const product = await store.show(req.body.id);
+        res.json(product);
+    } catch (err) {
+        errLogger.error(err);
+    }
 };
 
 const create = async (req: Request, res: Response) => {

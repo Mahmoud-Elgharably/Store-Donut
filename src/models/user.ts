@@ -75,23 +75,28 @@ export class UserStore {
     }
 
     async authenticate(user_name: string, password: string): Promise<User | null> {
-        const conn = await db.connect();
-        const sql = 'SELECT * FROM users WHERE user_name = ($1)';
-        const result = await conn.query(sql, [user_name]);
-        conn.release();
-        if (result.rows.length) {
-            const user = result.rows[0];
-            if (bcrtpt.compareSync(password + config.pepper, user.pwrd_digest)) {
-                return {
-                    id: user.id,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    user_name: user.user_name,
-                    password: '',
-                };
+        try {
+            const conn = await db.connect();
+            const sql = 'SELECT * FROM users WHERE user_name = ($1)';
+            const result = await conn.query(sql, [user_name]);
+            conn.release();
+            if (result.rows.length) {
+                const user = result.rows[0];
+                if (bcrtpt.compareSync(password + config.pepper, user.pwrd_digest)) {
+                    return {
+                        id: user.id,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        user_name: user.user_name,
+                        password: '',
+                    };
+                }
             }
+            return null;
+        } catch (err) {
+            errLogger.error(err);
+            return null;
         }
-        return null;
     }
 
     async delete(id: string): Promise<User | null> {

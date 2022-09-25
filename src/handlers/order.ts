@@ -6,13 +6,21 @@ import errLogger from '../utilities/errLogger';
 const store = new OrderStore();
 
 const index = async (_req: Request, res: Response) => {
-    const orders = await store.index();
-    res.json(orders);
+    try {
+        const orders = await store.index();
+        res.json(orders);
+    } catch (err) {
+        errLogger.error(err);
+    }
 };
 
 const show = async (req: Request, res: Response) => {
-    const order = await store.show(req.body.id);
-    res.json(order);
+    try {
+        const order = await store.show(req.body.id);
+        res.json(order);
+    } catch (err) {
+        errLogger.error(err);
+    }
 };
 
 const create = async (req: Request, res: Response) => {

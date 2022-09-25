@@ -5,13 +5,21 @@ import errLogger from '../utilities/errLogger';
 const store = new CategoryStore();
 
 const index = async (_req: Request, res: Response) => {
-    const categories = await store.index();
-    res.json(categories);
+    try {
+        const categories = await store.index();
+        res.json(categories);
+    } catch (err) {
+        errLogger.error(err);
+    }
 };
 
 const show = async (req: Request, res: Response) => {
-    const category = await store.show(req.body.id);
-    res.json(category);
+    try {
+        const category = await store.show(req.body.id);
+        res.json(category);
+    } catch (err) {
+        errLogger.error(err);
+    }
 };
 
 const create = async (req: Request, res: Response) => {

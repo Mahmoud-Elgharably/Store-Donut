@@ -5,13 +5,21 @@ import errLogger from '../utilities/errLogger';
 const store = new StatusStore();
 
 const index = async (_req: Request, res: Response) => {
-    const statuses = await store.index();
-    res.json(statuses);
+    try {
+        const statuses = await store.index();
+        res.json(statuses);
+    } catch (err) {
+        errLogger.error(err);
+    }
 };
 
 const show = async (req: Request, res: Response) => {
-    const status = await store.show(req.body.id);
-    res.json(status);
+    try {
+        const status = await store.show(req.body.id);
+        res.json(status);
+    } catch (err) {
+        errLogger.error(err);
+    }
 };
 
 const create = async (req: Request, res: Response) => {
